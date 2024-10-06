@@ -1,6 +1,9 @@
 # Express Server
 server.js
 
+# Layout Explorer
+WorkspaceLayout.js
+
 # Environment
 .env
 .env.local
