@@ -36,14 +36,21 @@ const UploadDocument = () => {
     });
   };
 
+  // const handleSave = async () => {
+  //   if (imgSrc) {
+  //     const resized = await resizeImage(imgSrc, 200);
+  //     setResizedImage(resized);
+  //     console.log("Resized image ready for sending to API");
+  //   }
+  // };
+
   const handleSave = async () => {
     if (imgSrc) {
       const resized = await resizeImage(imgSrc, 200);
-      setResizedImage(resized);
-      console.log("Resized image ready for sending to API");
+      navigate('/workspace', { state: { imageData: resized } });
     }
   };
-
+  
   return (
     <Flex direction="column" gap="3" align="center">
       <Box>

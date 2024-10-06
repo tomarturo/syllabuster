@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ScanDocument from './components/ScanDocument';
 import HomePage from './components/HomePage';
 import UploadDocument from './components/UploadDocument';
+import Workspace from './components/Workspace';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/upload" element={<UploadDocument />} />
             <Route path="/scan" element={<ScanDocument />} />
+            <Route path="/workspace" element={<Workspace />} />
           </Routes>
         </Container>
       </Router>

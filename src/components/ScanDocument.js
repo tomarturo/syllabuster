@@ -12,7 +12,11 @@ const ScanDocument = () => {
 
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
+      navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { exact: "environment" }
+        }
+      })
         .then(stream => {
           if (videoRef.current) {
             videoRef.current.srcObject = stream;
@@ -20,7 +24,21 @@ const ScanDocument = () => {
         })
         .catch(err => {
           console.error("Error accessing camera:", err);
-          setError("Unable to access the camera. Please ensure you've granted the necessary permissions.");
+          if (err.name === 'OverconstrainedError') {
+            // Fallback to any available camera if the rear camera is not available
+            navigator.mediaDevices.getUserMedia({ video: true })
+              .then(stream => {
+                if (videoRef.current) {
+                  videoRef.current.srcObject = stream;
+                }
+              })
+              .catch(fallbackErr => {
+                console.error("Error accessing any camera:", fallbackErr);
+                setError("Unable to access the camera. Please ensure you've granted the necessary permissions.");
+              });
+          } else {
+            setError("Unable to access the rear camera. Please ensure you've granted the necessary permissions.");
+          }
         });
     } else {
       setError("Your browser doesn't support camera access.");
@@ -59,11 +77,18 @@ const ScanDocument = () => {
     });
   };
 
+  // const handleSave = async () => {
+  //   if (imgSrc) {
+  //     const resized = await resizeImage(imgSrc, 200);
+  //     setResizedImage(resized);
+  //     console.log("Resized image ready for sending to API");
+  //   }
+  // };
+
   const handleSave = async () => {
     if (imgSrc) {
       const resized = await resizeImage(imgSrc, 200);
-      setResizedImage(resized);
-      console.log("Resized image ready for sending to API");
+      navigate('/workspace', { state: { imageData: resized } });
     }
   };
 
