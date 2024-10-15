@@ -1,3 +1,8 @@
+#Local Certs
+localhost-key.pem
+localhost.pem
+
+
 # Express Server
 server.js
 
